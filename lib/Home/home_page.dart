@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:customer/Home/view_product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -80,6 +81,7 @@ class _ShowProductsState extends State<ShowProducts>
 
           else if (snapshot.hasData && snapshot.connectionState == ConnectionState.done)
           {
+            String productID;
             String productPicture;
             String productName;
             String productPrice;
@@ -96,6 +98,7 @@ class _ShowProductsState extends State<ShowProducts>
 
               productDetails = snapshot.data.docs[i].data();
 
+              productID = snapshot.data.docs[i].reference.id;
               productPicture = productDetails['Picture'].toString();
               productName = productDetails['Name'].toString();
               productPrice = productDetails['Price'].toString();
@@ -103,7 +106,7 @@ class _ShowProductsState extends State<ShowProducts>
               productDescription = productDetails['Description'].toString();
 
               productsList.add(
-                Product(productPicture, productName, productPrice, productRating, productDescription)
+                Product(productID, productPicture, productName, productPrice, productRating, productDescription)
               );
             }
 
@@ -121,11 +124,26 @@ class _ShowProductsState extends State<ShowProducts>
                         child: Stack(
                           children: [
                             
-                            VxBox(
-                              child: Image.network(
-                                productsList[index].productPicture,
-                              ),
-                            ).rounded.white.square(140).p16.make(),
+                            InkWell(
+
+                              onTap: ()
+                              {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => ProductDetails(
+                                    productID: productsList[index].productID,
+                                  ),
+                                ));
+                              },
+
+                              child: VxBox(
+                                child: Hero(
+                                  tag: 'Product details',
+                                  child: Image.network(
+                                    productsList[index].productPicture,
+                                  ),
+                                ),
+                              ).rounded.white.square(140).p16.make(),
+                            ),
 
                             Positioned(
                               right: 0,
@@ -145,7 +163,7 @@ class _ShowProductsState extends State<ShowProducts>
                               bottom: 0,
                               child: SizedBox(
                                 height: 35,
-                                width: 45,
+                                width: 55,
 
                                 child: Center(
                                   child: ElevatedButton(
@@ -213,11 +231,12 @@ class _ShowProductsState extends State<ShowProducts>
 
 class Product
 {
+  final String productID;
   final String productPicture;
   final String productName;
   final String productPrice;
   final String productRating;
   final String productDescription;
 
-  Product(this.productPicture, this.productName, this.productPrice, this.productRating, this.productDescription);
+  Product(this.productID, this.productPicture, this.productName, this.productPrice, this.productRating, this.productDescription);
 }
