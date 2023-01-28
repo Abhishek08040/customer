@@ -2,10 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_strategy/url_strategy.dart';
-
 import 'Home/home_page.dart';
 import 'Registration and Login/login.dart';
 import 'Registration and Login/sign_up.dart';
+
 
 Future<void> main()
 async {
@@ -56,13 +56,12 @@ class _MyAppState extends State<MyApp>
           )
       ),
 
-      initialRoute: '/login',
+      initialRoute: '/home',
 
       routes: {
         '/signup': (context) => const SignUp(),
         '/login': (context) => const Login(),
         '/home': (context) => const Home(),
-
 
       },
 

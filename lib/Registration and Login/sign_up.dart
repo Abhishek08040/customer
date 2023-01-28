@@ -341,29 +341,26 @@ class _Page2State extends State<Page2>
 
                   Text("Choose a password:", style: GoogleFonts.andikaNewBasic(),),
 
-                  Container(
+                  TextFormField(
+                    keyboardType: TextInputType.visiblePassword,
 
-                    child: TextFormField(
-                      keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
 
-                      obscureText: true,
+                    controller: _password,
 
-                      controller: _password,
-
-                      validator: (value)
+                    validator: (value)
+                    {
+                      if (value!.isEmpty)
                       {
-                        if (value!.isEmpty)
-                        {
-                          return "Please enter a password";
-                        }
-                      },
+                        return "Please enter a password";
+                      }
+                    },
 
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-
-
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                     ),
+
+
                   ),
 
                   const SizedBox(height: 20,),
@@ -411,11 +408,11 @@ class _Page2State extends State<Page2>
             String profilePictureURL;
             if (widget.display_photo != null)
               {
-                final image_ref = storageRef.child('display photo.png');
-                image_ref.putFile(widget.display_photo, SettableMetadata(
+                final imageRef = storageRef.child('display photo.png');
+                imageRef.putFile(widget.display_photo, SettableMetadata(
                   contentType: "image/jpeg",
                 ));
-                profilePictureURL = await image_ref.getDownloadURL();
+                profilePictureURL = await imageRef.getDownloadURL();
                 profilePictureURL = profilePictureURL.substring(0, profilePictureURL.length-43);
               }
             else

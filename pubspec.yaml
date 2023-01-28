@@ -42,6 +42,7 @@ dependencies:
   shared_preferences: ^2.0.15
   cloud_firestore: ^4.2.0
   firebase_core: ^2.4.0
+  firebase_database: ^10.0.9
   google_sign_in: ^5.4.1
   rating_dialog: ^2.0.4
   flutter_rating_bar: ^4.0.1
@@ -59,10 +60,19 @@ dependencies:
   firebase_storage: ^11.0.9
   motion_toast: ^2.6.4
   curved_drawer_fork: ^0.0.1
+  bottom_bar_with_sheet: ^2.4.0
   dropdown_button2: ^1.9.2
   syncfusion_flutter_datepicker: ^20.4.38
   app_popup_menu: ^1.0.0
   dotted_border: ^2.0.0+3
+  anim_search_bar: ^2.0.3
+  searchbar_animation: ^0.0.4
+  radio_grouped_buttons: ^1.0.1
+  syncfusion_flutter_sliders: ^20.4.44
+  custom_radio_group_list: ^1.0.0
+  cupertino_radio_choice: ^1.0.2
+  custom_radio_grouped_button: ^2.1.2+2
+
 
 
 dev_dependencies:
