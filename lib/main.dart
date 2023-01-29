@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp>
         '/signup': (context) => const SignUp(),
         '/login': (context) => const Login(),
         '/home': (context) => const Home(),
-        '/order': (context) => const Order(),
+        '/order': (context) => const OrderProducts(),
 
       },
 

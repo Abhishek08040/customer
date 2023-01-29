@@ -1,5 +1,6 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:customer/Home/order.dart';
 import 'package:customer/Home/view_product_details.dart';
 import 'package:drop_down_list/drop_down_list.dart';
 import 'package:flutter/material.dart';
@@ -823,7 +824,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       child: FloatingActionButton.extended(
                         onPressed: ()
                         {
-                          Navigator.pushNamed(context, '/order').then((value) { setState(() {});});
+                          if (global_variables.listOfCart.isNotEmpty)
+                            {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => const OrderProducts(),
+                              )).then((value) {
+                                setState(() {});
+                              });
+                            }
                         },
 
                         icon: const Icon(Icons.shopping_cart),
