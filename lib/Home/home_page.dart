@@ -823,7 +823,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       child: FloatingActionButton.extended(
                         onPressed: ()
                         {
-                          Navigator.pushNamed(context, '/order');
+                          Navigator.pushNamed(context, '/order').then((value) { setState(() {});});
                         },
 
                         icon: const Icon(Icons.shopping_cart),
@@ -947,8 +947,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     products = FirebaseFirestore
         .instance
         .collection('Products')
-        .where('SearchQueries', arrayContainsAny: searchQuery.split(' '))
-        .limit(60);
+        .where('SearchQueries', arrayContainsAny: searchQuery.split(' '));
+
 
     products.get().then((QuerySnapshot snapshot) {
       listOfProducts.clear();

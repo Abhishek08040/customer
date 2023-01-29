@@ -194,7 +194,7 @@ class _LoginCredentialsState extends State<LoginCredentials>
               const SizedBox(height: 20,),
               Row(
                 children: [
-                  const Expanded(child: const Divider(thickness: 1, color: Colors.black,),),
+                  const Expanded(child: Divider(thickness: 1, color: Colors.black,),),
                   Text(" OR ", style: GoogleFonts.sourceSansPro(),),
                   const Expanded(child: Divider(thickness: 1, color: Colors.black,),),
                 ],

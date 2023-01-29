@@ -4,6 +4,7 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'global.dart' as global_variables;
 
 class Order extends StatefulWidget {
   const Order({Key? key}) : super(key: key);
@@ -22,97 +23,94 @@ class _OrderState extends State<Order>
   @override
   Widget build(BuildContext context)
   {
-    return Material(
-      child: Form(
-        key: _key,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
 
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        margin: const EdgeInsets.all(25),
 
-          children: [
-            Text("Thank you for \nmaking a purchase", style: GoogleFonts.comfortaa(
-              color: Colors.black,
-              fontWeight: FontWeight.w400,
-              fontSize: 30,
-            ),),
+        child: Center(
+          child: Form(
+            key: _key,
 
-            const SizedBox(height: 25,),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
 
-            Text("Enter your Location:", style: GoogleFonts.andikaNewBasic(),),
+              children: [
 
-            const SizedBox(height: 5,),
+                Text("Thank you for purchasing", style: GoogleFonts.comfortaa(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 30,
+                ),),
 
-            TextFormField(
-              keyboardType: TextInputType.multiline,
-              maxLines: 3,
-              minLines: 3,
+                const SizedBox(height: 20,),
 
-              controller: _location,
+                Text("Enter your Location:", style: GoogleFonts.andikaNewBasic(),),
 
-              validator: (value)
-              {
-                if (value!.isEmpty)
-                {
-                  return "Please enter your location";
-                }
-                return null;
-              },
+                const SizedBox(height: 5,),
 
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 3,
+                  minLines: 3,
 
+                  controller: _location,
 
-            ),
-
-            const SizedBox(height: 20,),
-
-            Align(
-              alignment: Alignment.centerRight,
-
-              child: SizedBox(
-                height: 40,
-                child: IconButton(
-                  onPressed: () async
+                  validator: (value)
                   {
-                    if (_key.currentState!.validate())
+                    if (value!.isEmpty)
                     {
-
-                      Map <String, dynamic> location =
-                      {
-                        "Location" : _location.text.toString(),
-                      };
-
-                       FirebaseFirestore.instance.collection('Customers')
-                           .doc(user?.email!)
-                           .update(location);
-
-
-
+                      return "Please enter your location";
                     }
-
+                    return null;
                   },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      Vx.blue900,
-                    ),
-                    shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        )
-                    ),
+
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
                   ),
 
-                  icon: Image.network('https://cdn-icons-png.flaticon.com/128/3007/3007303.png',),
 
                 ),
-              ),
+
+                const SizedBox(height: 20,),
+
+              ],
             ),
+          ),
+        ),
+      ).py32(),
 
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async
+        {
+          if (_key.currentState!.validate())
+          {
 
-          ],
-        ).p24().py32(),
+            Map <String, dynamic> location =
+            {
+              "Location" : _location.text.toString(),
+            };
+
+            FirebaseFirestore.instance.collection('Customers')
+                .doc(user?.email!)
+                .update(location);
+
+            global_variables.listOfCart.clear();
+            global_variables.listOfFavourites.clear();
+
+            Navigator.pushReplacementNamed(context, '/home');
+
+          }
+        },
+
+        icon: const Icon(Icons.shopping_cart),
+        backgroundColor: Colors.pink,
+        hoverColor: Vx.pink600,
+        elevation: 10.0,
+        label: Text("Order", style: GoogleFonts.openSans(),),
       ),
 
     );
