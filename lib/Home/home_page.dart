@@ -10,7 +10,6 @@ import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
-import 'dart:developer';
 
 import 'global.dart' as global_variables;
 
@@ -27,7 +26,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       .collection('Products');
 
   List<Product> listOfProducts = [];
-  List<AddedProduct> favouriteProducts = [];
+  List<FavouriteProducts> favouriteProducts = [];
 
   final TextEditingController _searchQueryTextEditingController = TextEditingController();
   String searchQuery = '';
@@ -55,6 +54,60 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
 
+    global_variables.listOfCart.clear();
+    global_variables.listOfFavourites.clear();
+
+    List<String> listOfFavourites = [];
+    Map<String, dynamic> listOfCart = {};
+
+    CollectionReference products = FirebaseFirestore
+        .instance
+        .collection('Products');
+
+    FirebaseFirestore
+        .instance
+        .collection('Customers')
+        .doc(user?.email!)
+        .get()
+        .then((value)
+    {
+      Map item = value.data()!;
+      listOfFavourites = (item['Favourites'] as List).map((e) =>
+      e as String).toList();
+
+      listOfCart = item['Cart'];
+
+      for (var element in listOfFavourites)
+      {
+        products.doc(element).get().then((product)
+        {
+          Map item = product.data()! as Map<String, dynamic>;
+
+          global_variables.listOfFavourites.add(FavouriteProducts(
+            element,
+            item['Picture'].split('?')[0],
+            item['Name'],
+          ));
+        });
+      }
+
+      for (var element in listOfCart.keysList())
+      {
+        products.doc(element).get().then((product)
+        {
+          Map item = product.data()! as Map<String, dynamic>;
+
+          global_variables.listOfCart.add(CartProducts(
+            element,
+            item['Picture'].split('?')[0],
+            item['Name'],
+            item['UnitPrice'],
+            listOfCart[element],
+
+          ));
+        });
+      }
+    });
 
   }
 
@@ -111,6 +164,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           children: [
 
             const SizedBox(height: 15,),
+
             AnimSearchBar(
               width: 400,
               onSuffixTap: () {
@@ -474,81 +528,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   label: Text("Filter", style: GoogleFonts.andikaNewBasic(),),
                 ).px12(),
 
-                IconButton(
-                  onPressed: ()
-                  {
-                    global_variables.listOfCart.clear();
-                    global_variables.listOfFavourites.clear();
-
-                    List<String> listOfFavourites = [];
-                    Map<String, dynamic> listOfCart = {};
-
-                    CollectionReference products = FirebaseFirestore
-                        .instance
-                        .collection('Products');
-
-                    FirebaseFirestore
-                        .instance
-                        .collection('Customers')
-                        .doc(user?.email!)
-                        .get()
-                        .then((value)
-                    {
-                      Map item = value.data()!;
-                      listOfFavourites = (item['Favourites'] as List).map((e) =>
-                      e as String).toList();
-
-                      listOfCart = item['Cart'];
-
-                      for (var element in listOfFavourites)
-                      {
-                        products.doc(element).get().then((product)
-                        {
-                          Map item = product.data()! as Map<String, dynamic>;
-
-                          global_variables.listOfFavourites.add(AddedProduct(
-                            element,
-                            item['Picture'].split('?')[0],
-                            item['Name'],
-                            item['UnitPrice'],
-                            item['Ratings'] ?? 3,
-                            item['Quantity'] ?? 0,
-                          ));
-                          setState(() {
-
-                          });
-                        });
-                      };
-
-                      for (var element in listOfCart.keysList())
-                      {
-                        products.doc(element).get().then((product)
-                        {
-                          Map item = product.data()! as Map<String, dynamic>;
-
-                          global_variables.listOfCart.add(AddedProduct(
-                            element,
-                            item['Picture'].split('?')[0],
-                            item['Name'],
-                            item['UnitPrice'],
-                            item['Ratings'] ?? 3,
-                            listOfCart[element],
-
-                          ));
-                          setState(() {
-
-                          });
-                        });
-                      };
-
-                    });
-
-                  },
-                  icon: const Icon(Icons.add_circle),
-                )
-
-
-
               ],
             ),
 
@@ -651,9 +630,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               ProductInFavourite(
                                 productID: listOfProducts[index].productID, 
                                 productPicture: listOfProducts[index].productPicture, 
-                                productName: listOfProducts[index].productName, 
-                                productPrice: listOfProducts[index].productPrice, 
-                                productRating: listOfProducts[index].productRating,
+                                productName: listOfProducts[index].productName,
                                 
                               ),
 
@@ -664,7 +641,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 productPicture: listOfProducts[index].productPicture,
                                 productName: listOfProducts[index].productName,
                                 productPrice: listOfProducts[index].productPrice,
-                                productRating: listOfProducts[index].productRating,
 
                               ),
 
@@ -708,6 +684,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         sheetChild: StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) setState)
             {
+              num totalPrice = 0;
+              for (int i = 0; i < global_variables.listOfCart.length; i++)
+                {
+                  totalPrice += global_variables.listOfCart[i].productPrice *
+                      global_variables.listOfCart[i].productQuantity;
+                }
+
               return _bottomBarController.selectedIndex == 0 ?
 
               SingleChildScrollView(
@@ -765,13 +748,33 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 .make(),
 
                             const SizedBox(width: 10,),
-                            SizedBox(
-                              width: 130,
-                              child: Text(global_variables.listOfCart[i].productName,
-                                style: GoogleFonts.poppins(fontSize: 15,),
-                                maxLines:4,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+
+                              children: [
+                                SizedBox(
+                                  width: 130,
+                                  child: Text(global_variables.listOfCart[i].productName,
+                                    style: GoogleFonts.poppins(fontSize: 15,),
+                                    maxLines:3,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 2,),
+
+                                Text("Total ₹ ${global_variables.listOfCart[i].productQuantity *
+                                    global_variables.listOfCart[i].productPrice}",
+
+                                  style: GoogleFonts.lato(
+                                  fontSize: 13,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),),
+
+                              ],
                             ),
 
                             SizedBox(
@@ -814,6 +817,24 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       const SizedBox(height: 20,),
 
                     ],
+
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FloatingActionButton.extended(
+                        onPressed: ()
+                        {
+                          Navigator.pushNamed(context, '/order');
+                        },
+
+                        icon: const Icon(Icons.shopping_cart),
+                        label: Text("₹ $totalPrice", style: GoogleFonts.lato(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ).p12(),
 
                   ],
                 ),
@@ -912,7 +933,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         },
 
 
-
         items: const [
           BottomBarWithSheetItem(icon: Icons.shopping_cart_outlined),
           BottomBarWithSheetItem(icon: Icons.favorite_outline),
@@ -992,15 +1012,11 @@ class ProductInFavourite extends StatefulWidget
   final String productID;
   final String productPicture;
   final String productName;
-  final num productPrice;
-  final num productRating;
   
   const ProductInFavourite({Key? key,
     required this.productID,
     required this.productPicture,
     required this.productName,
-    required this.productPrice,
-    required this.productRating,
   }) : super(key: key);
 
   @override
@@ -1029,13 +1045,10 @@ class _ProductInFavouriteState extends State<ProductInFavourite>
         }
         else
         {
-          global_variables.listOfFavourites.add(AddedProduct(
+          global_variables.listOfFavourites.add(FavouriteProducts(
               widget.productID,
               widget.productPicture,
               widget.productName,
-              widget.productPrice,
-              widget.productRating,
-              0
           )
           );
         }
@@ -1054,7 +1067,6 @@ class ProductInCart extends StatefulWidget
   final String productPicture;
   final String productName;
   final num productPrice;
-  final num productRating;
 
 
   const ProductInCart({Key? key,
@@ -1062,7 +1074,6 @@ class ProductInCart extends StatefulWidget
     required this.productPicture,
     required this.productName,
     required this.productPrice,
-    required this.productRating,
   }) : super(key: key);
 
   @override
@@ -1081,6 +1092,7 @@ class _ProductInCartState extends State<ProductInCart>
     return InkWell(
 
       child: isProductAddedToCart ?
+
       Text(global_variables.listOfCart.singleWhere((element) =>
       element.productID == widget.productID)
           .productQuantity.toString(),
@@ -1093,18 +1105,16 @@ class _ProductInCartState extends State<ProductInCart>
       const Icon(Icons.shopping_cart_outlined),
 
 
-
       onTap: ()
       {
         if (!isProductAddedToCart)
           {
             setState(() {
-              global_variables.listOfCart.add(AddedProduct(
+              global_variables.listOfCart.add(CartProducts(
                   widget.productID,
                   widget.productPicture,
                   widget.productName,
                   widget.productPrice,
-                  widget.productRating,
                   1,
               ));
             });
@@ -1137,14 +1147,22 @@ class Product
   Product(this.productID, this.productPicture, this.productName, this.productPrice, this.productRating, this.productDescription, this.productColor);
 }
 
-class AddedProduct
+class FavouriteProducts
+{
+  final String productID;
+  final String productPicture;
+  final String productName;
+
+  FavouriteProducts(this.productID, this.productPicture, this.productName);
+}
+
+class CartProducts
 {
   final String productID;
   final String productPicture;
   final String productName;
   final num productPrice;
-  final num productRating;
   num productQuantity;
 
-  AddedProduct( this.productID, this.productPicture, this.productName, this.productPrice, this.productRating, this.productQuantity,);
+  CartProducts(this.productID, this.productPicture, this.productName, this.productPrice, this.productQuantity,);
 }
