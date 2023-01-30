@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'Home/home_page.dart';
 import 'Home/order.dart';
+import 'Home/order_success.dart';
 import 'Registration and Login/login.dart';
 import 'Registration and Login/sign_up.dart';
 
@@ -64,6 +65,7 @@ class _MyAppState extends State<MyApp>
         '/login': (context) => const Login(),
         '/home': (context) => const Home(),
         '/order': (context) => const OrderProducts(),
+        '/order_successful': (context) => const OrderSuccessful(invoiceNo: '0',),
 
       },
 

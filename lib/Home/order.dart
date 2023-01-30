@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 import 'global.dart' as global_variables;
+import 'order_success.dart';
 
 class OrderProducts extends StatefulWidget {
   const OrderProducts({Key? key}) : super(key: key);
@@ -154,8 +155,6 @@ class _OrderProductsState extends State<OrderProducts>
 
                 ),
 
-                const SizedBox(height: 20,),
-
               ],
             ),
           ),
@@ -239,9 +238,15 @@ class _OrderProductsState extends State<OrderProducts>
                             .doc(user?.email!)
                             .update({'Favourites': []});
 
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderSuccessful(invoiceNo: invoiceNo.toString())),
+                        ).then((value) {
+                          setState(() {});
+                        });
+
                       });
                 });
-            Navigator.pushNamed(context, '/home');
           }
         },
 
@@ -254,7 +259,4 @@ class _OrderProductsState extends State<OrderProducts>
 
     );
   }
-
-
-
 }
