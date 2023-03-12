@@ -19,7 +19,7 @@ class _OrderSuccessfulState extends State<OrderSuccessful>
     return WillPopScope(
 
       onWillPop: () async {
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/home');
         return true;
       },
 

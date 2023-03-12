@@ -4,6 +4,7 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import 'global.dart' as global_variables;
 import 'order_success.dart';
@@ -19,8 +20,9 @@ class _OrderProductsState extends State<OrderProducts>
 {
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  final TextEditingController _location = TextEditingController();
+  final TextEditingController _location = TextEditingController(text: global_variables.userLocation);
   final TextEditingController _deliveryTime = TextEditingController();
+  final TextEditingController _deliveryDate = TextEditingController();
 
   List<String> deliveryTime = ['7 AM to 12 PM', '12 PM to 4 PM', '4 PM to 8 PM', '8 PM to 12 AM'];
 
@@ -85,7 +87,88 @@ class _OrderProductsState extends State<OrderProducts>
 
                 const SizedBox(height: 20,),
 
-                Text("Choose a delivery time:", style: GoogleFonts.andikaNewBasic(),),
+                Text('Choose a date for delivery:', style: GoogleFonts.andikaNewBasic(),),
+
+                const SizedBox(height: 5,),
+
+                TextFormField(
+                  readOnly: true,
+
+                  onTap: ()
+                  {
+                    showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: Center(
+                            child: Text('Choose a date for delivery',
+                              style: GoogleFonts.andikaNewBasic(),
+                            ),
+                          ),
+                          content: SizedBox(
+                            height: 360,
+                            width: 500,
+
+                            child: Column(
+                              children: [
+                                SfDateRangePicker(
+
+                                  view: DateRangePickerView.month,
+                                  todayHighlightColor: Colors.blue,
+                                  enablePastDates: false,
+                                  selectionMode: DateRangePickerSelectionMode.single,
+                                  onSelectionChanged: (var dateSelected)
+                                  {
+                                    setState(()
+                                    {
+                                      _deliveryDate.text = dateSelected
+                                          .value
+                                          .toString()
+                                          .substring(0,10);
+                                    });
+                                  },
+                                ),
+
+                                Align(
+                                  alignment: Alignment.centerRight,
+
+                                  child: IconButton(
+                                    iconSize: 30,
+                                    splashRadius: 30,
+                                    splashColor: Colors.black26,
+                                    icon: const Icon(Icons.done_outlined),
+                                    color: Colors.black,
+                                    onPressed: ()
+                                    {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                    );
+                  },
+
+                  controller: _deliveryDate,
+
+                  validator: (value)
+                  {
+                    if (value!.isEmpty)
+                    {
+                      return "Please select the delivery date";
+                    }
+                    return null;
+                  },
+
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+
+                const SizedBox(height: 20,),
+
+                Text("Select a delivery time:", style: GoogleFonts.andikaNewBasic(),),
 
                 const SizedBox(height: 5,),
 
@@ -166,23 +249,53 @@ class _OrderProductsState extends State<OrderProducts>
         {
           if (_key.currentState!.validate())
           {
+            var customer = FirebaseFirestore.instance.collection('Customers')
+                .doc(user?.email!);
+
+            List<String> favouritesProduct = [];
+            for (var favouritesItems in global_variables.listOfFavourites)
+              {
+                favouritesProduct.add(favouritesItems.productID);
+              }
 
             Map <String, dynamic> data =
             {
               "Location" : _location.text.toString(),
+              'Favourites' : favouritesProduct,
             };
 
-            FirebaseFirestore.instance.collection('Customers')
-                .doc(user?.email!)
-                .update(data);
+            customer.update(data);
 
             List<String> productsInCart = [];
-            for (var element in global_variables.listOfCart)
+            for (var cartItems in global_variables.listOfCart)
             {
-              for (int i = 0; i < element.productQuantity; i++)
+              for (int i = 0; i < cartItems.productQuantity; i++)
                 {
-                  productsInCart.add(element.productID);
+                  productsInCart.add(cartItems.productID);
                 }
+
+              var product = FirebaseFirestore
+                  .instance
+                  .collection('Products')
+                  .doc(cartItems.productID);
+
+
+              product.get().then((value)
+              {
+                Map item = value.data()!;
+
+                int quantity = item['Quantity'] - cartItems.productQuantity;
+                int quantitySold = item['QuantitySold'] + cartItems.productQuantity;
+
+
+                product.update({
+                  'Quantity' : quantity,
+                  'QuantitySold' : quantitySold,
+                });
+
+
+              });
+
             }
 
             final now = DateTime.now();
@@ -193,7 +306,8 @@ class _OrderProductsState extends State<OrderProducts>
                     + (now.hour).toString().padLeft(2, '0')
                     + (now.minute).toString().padLeft(2, '0');
 
-                FirebaseFirestore
+
+              FirebaseFirestore
                     .instance
                     .collection('Stores')
                     .doc('Transaction data')
@@ -201,11 +315,8 @@ class _OrderProductsState extends State<OrderProducts>
                     .then((value1)
                 {
                   Map item1 = value1.data()!;
-                  FirebaseFirestore
-                      .instance
-                      .collection('Customers')
-                      .doc(user?.email!)
-                      .get()
+
+                  customer.get()
                       .then((value2)
                       {
                         Map item2 = value2.data()!;
@@ -219,6 +330,7 @@ class _OrderProductsState extends State<OrderProducts>
                           'OrderedDelivered' : false,
                           'StockCode' : productsInCart,
                           "Delivery Time" : _deliveryTime.text.toString(),
+                          "Delivery Date" : _deliveryDate.text.toString(),
                         };
 
                         FirebaseFirestore.instance.collection('Transactions')
@@ -228,15 +340,10 @@ class _OrderProductsState extends State<OrderProducts>
                             .doc('Transaction data')
                             .update({'last invoice no' : invoiceNo});
 
-                        global_variables.listOfCart.clear();
-
-                        FirebaseFirestore.instance.collection('Customers')
-                            .doc(user?.email!)
+                        customer
                             .update({'Cart': []});
 
-                        FirebaseFirestore.instance.collection('Customers')
-                            .doc(user?.email!)
-                            .update({'Favourites': []});
+                        global_variables.listOfCart.clear();
 
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(
@@ -247,6 +354,7 @@ class _OrderProductsState extends State<OrderProducts>
 
                       });
                 });
+
           }
         },
 
@@ -260,3 +368,5 @@ class _OrderProductsState extends State<OrderProducts>
     );
   }
 }
+
+

@@ -27,7 +27,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       .collection('Products');
 
   List<Product> listOfProducts = [];
-  List<FavouriteProducts> favouriteProducts = [];
 
   final TextEditingController _searchQueryTextEditingController = TextEditingController();
   String searchQuery = '';
@@ -52,11 +51,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   void initState()
   {
     super.initState();
-
     WidgetsBinding.instance.addObserver(this);
-
     global_variables.listOfCart.clear();
-    global_variables.listOfFavourites.clear();
 
     List<String> listOfFavourites = [];
     Map<String, dynamic> listOfCart = {};
@@ -77,6 +73,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       e as String).toList();
 
       listOfCart = item['Cart'];
+      global_variables.userLocation = item['Location'];
 
       for (var element in listOfFavourites)
       {
@@ -129,7 +126,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           listOfAddedItems[element.productID] = element.productQuantity;
         }
 
-
         List<String> listOfFavourites = [];
         for (var element in global_variables.listOfFavourites) {
           listOfFavourites.add(element.productID);
@@ -151,7 +147,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(250, 244, 240, 1),
 
@@ -568,11 +565,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               },
 
                               child: VxBox(
-                                child: Hero(
-                                  tag: 'Product details',
-                                  child: Image.network(
-                                    listOfProducts[index].productPicture,
-                                  ),
+                                child: Image.network(
+                                  listOfProducts[index].productPicture,
                                 ),
                               ).rounded.white
                                   .square(140)
