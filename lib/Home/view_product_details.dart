@@ -1,7 +1,6 @@
-
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -44,8 +43,11 @@ class _ProductDetailsState extends State<ProductDetails>
             final String productPicture = data['Picture'].toString();
             final String productName = data['Name'].toString();
             final num productPrice = data['UnitPrice'];
-            final num productRating = data['Ratings'] ?? 3;
+            final num ratingsCount = data['Ratings Count'] ?? 0;
+            final num ratingsSum = data['Ratings Sum'] ?? 0;
+            final num averageRating = ratingsCount > 0 ? ratingsSum~/ratingsCount : 0;
             final String productDescription = data['Description'].toString();
+
 
 
             return Scaffold(
@@ -80,7 +82,7 @@ class _ProductDetailsState extends State<ProductDetails>
                             children: [
                               Row(
                                 children: [
-                                  for (int i = 0; i < productRating; i++)
+                                  for (int i = 0; i < averageRating; i++)
                                     Text(' ★ ', style: GoogleFonts.andikaNewBasic(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
@@ -107,11 +109,13 @@ class _ProductDetailsState extends State<ProductDetails>
                                       )
                                   ),),
 
-                                child: Text('214 Reviews', style: GoogleFonts.andikaNewBasic(
+                                child: Text('$ratingsCount Reviews', style: GoogleFonts.andikaNewBasic(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Colors.pink,
                                 ),),
+
+
                               )
                             ],
                           ).py4(),
@@ -134,7 +138,7 @@ class _ProductDetailsState extends State<ProductDetails>
                             productPicture: productPicture,
                             productName: productName,
                             productPrice: productPrice,
-                            productRating: productRating,
+                            productRating: ratingsCount,
                           ),
 
                           const SizedBox(height: 20,),
@@ -362,6 +366,10 @@ class _AddCommentsState extends State<AddComments>
   final TextEditingController _ratings = TextEditingController(text: '1');
   final TextEditingController _comment = TextEditingController();
 
+  CollectionReference productsCollection = FirebaseFirestore
+      .instance
+      .collection('Products');
+
   CollectionReference commentsCollection = FirebaseFirestore
       .instance
       .collection('Comments');
@@ -414,6 +422,7 @@ class _AddCommentsState extends State<AddComments>
             child: ElevatedButton(
               onPressed: () async
               {
+
                 if (_formKey.currentState!.validate())
                 {
                   commentsCollection.add({
@@ -421,6 +430,16 @@ class _AddCommentsState extends State<AddComments>
                     'Rating' : _ratings.text,
                     'Comment' : _comment.text,
                     'ProductID' : widget.productID,
+                  });
+
+
+                  var documentSnapshot = await productsCollection.doc(widget.productID).get();
+                  num ratingsCount = documentSnapshot['Ratings Count'] ?? 0;
+                  num ratingsSum = documentSnapshot['Ratings Sum'] ?? 0;
+
+                  productsCollection.doc(widget.productID).update({
+                    'Ratings Count': ratingsCount + 1,
+                    'Ratings Sum': ratingsSum + int.parse(_ratings.text),
                   });
 
                   setState(() {
@@ -438,6 +457,8 @@ class _AddCommentsState extends State<AddComments>
                   });
 
                 }
+
+
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
@@ -508,7 +529,7 @@ class _DisplayCommentsState extends State<DisplayComments>
                 title: Row(
                   children: [
                     for (int i = 0; i < int.parse(comment['Rating']); i++)
-                      Text('★ ', style: GoogleFonts.andikaNewBasic(
+                      Text(' ★ ', style: GoogleFonts.andikaNewBasic(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: const Color.fromRGBO(255,215,0, 1),
@@ -516,7 +537,10 @@ class _DisplayCommentsState extends State<DisplayComments>
                   ],
                 ),
 
-                subtitle: Text(comment['Comment']).px4(),
+                subtitle: Text(comment['Comment'],
+                  style: GoogleFonts.andikaNewBasic(
+                    textStyle: const TextStyle(fontWeight: FontWeight.bold)
+                  ),).px4(),
 
               );
             },
@@ -532,14 +556,4 @@ class _DisplayCommentsState extends State<DisplayComments>
     );
   }
 
-}
-
-class Comment
-{
-  final String displayPhoto;
-  final String customerName;
-  final String comment;
-  final int rating;
-
-  Comment(this.displayPhoto, this.customerName, this.comment, this.rating);
 }

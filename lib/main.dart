@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp>
           )
       ),
 
-      initialRoute: '/login',
+      initialRoute: '/home',
 
       routes: {
         '/signup': (context) => const SignUp(),

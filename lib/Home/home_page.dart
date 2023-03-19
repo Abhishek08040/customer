@@ -1,17 +1,16 @@
-import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:customer/Home/order.dart';
-import 'package:customer/Home/view_product_details.dart';
-import 'package:drop_down_list/drop_down_list.dart';
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
+import 'package:drop_down_list/model/selected_list_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:drop_down_list/model/selected_list_item.dart';
-import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
-
+import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:drop_down_list/drop_down_list.dart';
+import 'package:customer/Home/order.dart';
+import 'package:customer/Home/view_product_details.dart';
 import 'global.dart' as global_variables;
 
 class Home extends StatefulWidget {
