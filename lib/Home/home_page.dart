@@ -39,9 +39,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   SfRangeValues filterByPriceRange = const SfRangeValues(50, 1000);
 
   final List<SelectedListItem> filterByRatingsList = [
-    SelectedListItem(name: "5 ★ ", isSelected: false),
-    SelectedListItem(name: "4 ★ ", isSelected: false),
-    SelectedListItem(name: "3 ★ ", isSelected: false),
+    SelectedListItem(data: "5 ★ ", isSelected: false),
+    SelectedListItem(data: "4 ★ ", isSelected: false),
+    SelectedListItem(data: "3 ★ ", isSelected: false),
   ];
 
   User? user = FirebaseAuth.instance.currentUser;
@@ -202,7 +202,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                   const SizedBox(height: 14,),
 
                                   Text("Sort",
-                                    style: GoogleFonts.andikaNewBasic(
+                                    style: GoogleFonts.andika(
                                       fontWeight: FontWeight.w800,
                                       fontSize: 20,
                                     ),
@@ -307,7 +307,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     ),
                   ),
                   icon: const Icon(Icons.sort),
-                  label: Text("Sort", style: GoogleFonts.andikaNewBasic(),),
+                  label: Text("Sort", style: GoogleFonts.andika(),),
                 ).px12(),
 
                 ElevatedButton.icon(
@@ -328,14 +328,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                   const SizedBox(height: 14),
 
                                   Text("Filters",
-                                    style: GoogleFonts.andikaNewBasic(
+                                    style: GoogleFonts.andika(
                                       fontWeight: FontWeight.w800,
                                       fontSize: 20,
                                     ),
                                   ),
 
                                   Text("Price range:",
-                                    style: GoogleFonts.andikaNewBasic(),),
+                                    style: GoogleFonts.andika(),),
 
                                   SfRangeSlider(
                                     min: 50.0,
@@ -356,7 +356,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                   ),
 
                                   Text("Color:",
-                                    style: GoogleFonts.andikaNewBasic(),),
+                                    style: GoogleFonts.andika(),),
 
                                   Row(
                                     children: [
@@ -420,7 +420,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                   const SizedBox(height: 8,),
 
                                   Text("Ratings",
-                                    style: GoogleFonts.andikaNewBasic(),),
+                                    style: GoogleFonts.andika(),),
 
                                   TextFormField(
                                     readOnly: true,
@@ -436,24 +436,26 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
                                     onTap: () {
                                       DropDownState(
+                                        dropDown:
                                         DropDown(
                                             isSearchVisible: false,
                                             bottomSheetTitle: Text(
                                               "Choose a rating",
-                                              style: GoogleFonts.andikaNewBasic(
+                                              style: GoogleFonts.andika(
                                                 fontWeight: FontWeight.w800,
                                                 fontSize: 20,
                                               ),
                                             ).px32().py12(),
                                             data: filterByRatingsList,
-                                            selectedItems: (
-                                                List<dynamic> selectedList) {
-                                              setState(() {
-                                                filterByRating =
-                                                    selectedList[0].name
-                                                        .toString();
-                                              });
-                                            }),
+                                            // selectedItems: (
+                                            //     List<dynamic> selectedList) {
+                                            //   setState(() {
+                                            //     filterByRating =
+                                            //         selectedList[0].name
+                                            //             .toString();
+                                            //   });
+                                            // }
+                                            ),
                                       ).showModal(context);
                                     },
                                   ),
@@ -522,7 +524,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     ),
                   ),
                   icon: const Icon(Icons.filter_list),
-                  label: Text("Filter", style: GoogleFonts.andikaNewBasic(),),
+                  label: Text("Filter", style: GoogleFonts.andika(),),
                 ).px12(),
 
               ],
@@ -533,7 +535,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
               Text(
                 "No products found!",
-                style: GoogleFonts.andikaNewBasic(
+                style: GoogleFonts.andika(
                     fontSize: 15, fontWeight: FontWeight.w400),).px16().py20() :
 
               GridView.count(
@@ -580,7 +582,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       Text(listOfProducts[index].productName,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: GoogleFonts.andikaNewBasic(
+                        style: GoogleFonts.andika(
                             fontSize: 18, fontWeight: FontWeight.w800
                         ),),
 
@@ -588,7 +590,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       Text(listOfProducts[index].productDescription,
                         overflow: TextOverflow.visible,
                         maxLines: 1,
-                        style: GoogleFonts.andikaNewBasic(
+                        style: GoogleFonts.andika(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: Colors.black54,
@@ -599,7 +601,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         children: [
                           for (int i = 0; i <
                               listOfProducts[index].productRating; i++)
-                            Text(' ★ ', style: GoogleFonts.andikaNewBasic(
+                            Text(' ★ ', style: GoogleFonts.andika(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: const Color.fromRGBO(58, 1, 92, 1),
@@ -613,7 +615,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
                         children: [
                           Text("₹ ${listOfProducts[index].productPrice}",
-                            style: GoogleFonts.andikaNewBasic(
+                            style: GoogleFonts.andika(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: Vx.blue900
@@ -694,7 +696,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
                   children: [
                     Text("Cart",
-                      style: GoogleFonts.andikaNewBasic(
+                      style: GoogleFonts.andika(
                         fontWeight: FontWeight.w800,
                         fontSize: 20,
                       ),
@@ -848,7 +850,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
                   children: [
                     Text("Favourites",
-                      style: GoogleFonts.andikaNewBasic(
+                      style: GoogleFonts.andika(
                         fontWeight: FontWeight.w800,
                         fontSize: 20,
                       ),
@@ -1098,7 +1100,7 @@ class _ProductInCartState extends State<ProductInCart>
       element.productID == widget.productID)
           .productQuantity.toString(),
 
-        style: GoogleFonts.andikaNewBasic(
+        style: GoogleFonts.andika(
           fontSize: 15,
           fontWeight: FontWeight.w800,
         ),) :

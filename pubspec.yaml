@@ -33,46 +33,46 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  url_strategy: ^0.2.0
-  custom_rating_bar: ^2.0.4
-  flutter_advanced_drawer: ^1.3.2
-  syncfusion_flutter_datagrid: ^20.2.46
-  google_fonts: ^3.0.1
-  charts_flutter: ^0.12.0
-  shared_preferences: ^2.0.15
-  cloud_firestore: ^4.2.0
-  firebase_core: ^2.4.0
-  firebase_database: ^10.0.9
-  google_sign_in: ^5.4.1
+  cupertino_icons: ^1.0.8
+  url_strategy: ^0.3.0
+  custom_rating_bar: ^3.0.0
+  flutter_advanced_drawer: ^1.5.0
+  syncfusion_flutter_datagrid: ^30.2.4
+  google_fonts: ^6.3.0
+  #charts_flutter: ^0.12.0
+  shared_preferences: ^2.5.3
+  cloud_firestore: ^6.0.0
+  firebase_core: ^4.0.0
+  firebase_database: ^12.0.0
+  google_sign_in: ^7.1.1
   rating_dialog: ^2.0.4
   flutter_rating_bar: ^4.0.1
-  velocity_x: ^3.5.1
-  syncfusion_flutter_charts: ^20.2.48
-  drop_down_list: ^0.0.4
+  velocity_x: ^4.3.1
+  syncfusion_flutter_charts: ^30.2.4
+  drop_down_list: ^2.0.0
   expandable_page_view: ^1.0.17
-  awesome_snackbar_content: ^0.0.8
-  firebase_auth: ^4.2.1
+  awesome_snackbar_content: ^0.1.7
+  firebase_auth: ^6.0.0
   validators: ^3.0.0
-  file_picker: ^5.2.4
-  flutter_image_slideshow: ^0.1.4
-  easy_image_viewer: ^1.2.0
-  getwidget: ^3.0.1
-  firebase_storage: ^11.0.9
-  motion_toast: ^2.6.4
-  curved_drawer_fork: ^0.0.1
+  file_picker: ^10.2.3
+  flutter_image_slideshow: ^0.1.6
+  easy_image_viewer: ^1.5.1
+  getwidget: ^6.0.0
+  firebase_storage: ^13.0.0
+  motion_toast: ^2.14.0
+  curved_drawer_fork: ^0.0.1+1
   bottom_bar_with_sheet: ^2.4.0
-  dropdown_button2: ^1.9.2
-  syncfusion_flutter_datepicker: ^20.4.38
+  dropdown_button2: ^2.3.9
+  syncfusion_flutter_datepicker: ^30.2.4
   app_popup_menu: ^1.0.0
-  dotted_border: ^2.0.0+3
+  dotted_border: ^3.1.0
   anim_search_bar: ^2.0.3
   searchbar_animation: ^0.0.4
   radio_grouped_buttons: ^1.0.1
-  syncfusion_flutter_sliders: ^20.4.44
-  custom_radio_group_list: ^1.0.0
+  syncfusion_flutter_sliders: ^30.2.4
+  custom_radio_group_list: ^1.1.2
   cupertino_radio_choice: ^1.0.2
-  custom_radio_grouped_button: ^2.1.2+2
+  custom_radio_grouped_button: ^2.2.1
 
 
 

@@ -118,7 +118,7 @@ class _Page1State extends State<Page1>
 
                   const SizedBox(height: 20,),
 
-                  Text("Enter your Name:", style: GoogleFonts.andikaNewBasic(),),
+                  Text("Enter your Name:", style: GoogleFonts.andika(),),
 
                   TextFormField(
                     keyboardType: TextInputType.name,
@@ -155,7 +155,7 @@ class _Page1State extends State<Page1>
                         child: Column(
                           children: [
 
-                            Text("Enter your phone number:", style: GoogleFonts.andikaNewBasic(),),
+                            Text("Enter your phone number:", style: GoogleFonts.andika(),),
 
                             TextFormField(
                               keyboardType: TextInputType.phone,
@@ -191,7 +191,7 @@ class _Page1State extends State<Page1>
 
                           children: [
 
-                            Text("OTP:", style: GoogleFonts.andikaNewBasic(),),
+                            Text("OTP:", style: GoogleFonts.andika(),),
 
                             TextFormField(
                               keyboardType: TextInputType.number,
@@ -311,7 +311,7 @@ class _Page2State extends State<Page2>
 
                   const SizedBox(height: 20,),
 
-                  Text("Enter your email:", style: GoogleFonts.andikaNewBasic(),),
+                  Text("Enter your email:", style: GoogleFonts.andika(),),
 
                   TextFormField(
                     keyboardType: TextInputType.emailAddress,
@@ -339,7 +339,7 @@ class _Page2State extends State<Page2>
 
                   const SizedBox(height: 20,),
 
-                  Text("Choose a password:", style: GoogleFonts.andikaNewBasic(),),
+                  Text("Choose a password:", style: GoogleFonts.andika(),),
 
                   TextFormField(
                     keyboardType: TextInputType.visiblePassword,
@@ -365,7 +365,7 @@ class _Page2State extends State<Page2>
 
                   const SizedBox(height: 20,),
 
-                  Text("Confirm your password:", style: GoogleFonts.andikaNewBasic(),),
+                  Text("Confirm your password:", style: GoogleFonts.andika(),),
 
                   TextFormField(
                     obscureText: true,
@@ -387,7 +387,7 @@ class _Page2State extends State<Page2>
 
                   const SizedBox(height: 20,),
 
-                  Text(signUpMessage, style: GoogleFonts.andikaNewBasic(color: Colors.red),),
+                  Text(signUpMessage, style: GoogleFonts.andika(color: Colors.red),),
                 ],
               ),
             ),

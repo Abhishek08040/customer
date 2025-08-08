@@ -58,7 +58,7 @@ class _OrderProductsState extends State<OrderProducts>
 
                 const SizedBox(height: 20,),
 
-                Text("Enter your Location:", style: GoogleFonts.andikaNewBasic(),),
+                Text("Enter your Location:", style: GoogleFonts.andika(),),
 
                 const SizedBox(height: 5,),
 
@@ -87,7 +87,7 @@ class _OrderProductsState extends State<OrderProducts>
 
                 const SizedBox(height: 20,),
 
-                Text('Choose a date for delivery:', style: GoogleFonts.andikaNewBasic(),),
+                Text('Choose a date for delivery:', style: GoogleFonts.andika(),),
 
                 const SizedBox(height: 5,),
 
@@ -101,7 +101,7 @@ class _OrderProductsState extends State<OrderProducts>
                         builder: (ctx) => AlertDialog(
                           title: Center(
                             child: Text('Choose a date for delivery',
-                              style: GoogleFonts.andikaNewBasic(),
+                              style: GoogleFonts.andika(),
                             ),
                           ),
                           content: SizedBox(
@@ -168,7 +168,7 @@ class _OrderProductsState extends State<OrderProducts>
 
                 const SizedBox(height: 20,),
 
-                Text("Select a delivery time:", style: GoogleFonts.andikaNewBasic(),),
+                Text("Select a delivery time:", style: GoogleFonts.andika(),),
 
                 const SizedBox(height: 5,),
 
@@ -183,20 +183,20 @@ class _OrderProductsState extends State<OrderProducts>
 
                   isExpanded: true,
 
-                  icon: const Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black45,
-                  ),
-
-                  iconSize: 30,
-
-                  buttonHeight: 60,
-
-                  buttonPadding: const EdgeInsets.only(left: 5, right: 5),
-
-                  dropdownDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
+                  // icon: const Icon(
+                  //   Icons.arrow_drop_down,
+                  //   color: Colors.black45,
+                  // ),
+                  //
+                  // iconSize: 30,
+                  //
+                  // buttonHeight: 60,
+                  //
+                  // buttonPadding: const EdgeInsets.only(left: 5, right: 5),
+                  //
+                  // dropdownDecoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(15),
+                  // ),
 
                   items: deliveryTime
                       .map((item) =>

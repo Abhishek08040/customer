@@ -69,7 +69,7 @@ class _LoginCredentialsState extends State<LoginCredentials>
                 mainAxisAlignment: MainAxisAlignment.start,
 
                 children: [
-                  Text("Enter your username:", style: GoogleFonts.andikaNewBasic(),),
+                  Text("Enter your username:", style: GoogleFonts.andika(),),
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -95,7 +95,7 @@ class _LoginCredentialsState extends State<LoginCredentials>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Enter your password:", style: GoogleFonts.andikaNewBasic(),),
+                  Text("Enter your password:", style: GoogleFonts.andika(),),
                   TextFormField(
                     controller: _passwordController,
                     obscureText: true,
@@ -110,7 +110,7 @@ class _LoginCredentialsState extends State<LoginCredentials>
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  Text(loginMessage, style: GoogleFonts.andikaNewBasic(color: Colors.red),),
+                  Text(loginMessage, style: GoogleFonts.andika(color: Colors.red),),
                 ],
               ),
               const SizedBox(height: 20,),
@@ -179,13 +179,13 @@ class _LoginCredentialsState extends State<LoginCredentials>
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("No account?", style: GoogleFonts.andikaNewBasic(),),
+                  Text("No account?", style: GoogleFonts.andika(),),
                   InkWell(
                     onTap: (){
                       // Sign up
                       Navigator.pushNamed(context, '/signup');
                     },
-                    child: Text("Sign up", style: GoogleFonts.andikaNewBasic(
+                    child: Text("Sign up", style: GoogleFonts.andika(
                         color: Colors.blue
                     ),),
                   ),
@@ -195,7 +195,7 @@ class _LoginCredentialsState extends State<LoginCredentials>
               Row(
                 children: [
                   const Expanded(child: Divider(thickness: 1, color: Colors.black,),),
-                  Text(" OR ", style: GoogleFonts.sourceSansPro(),),
+                  Text(" OR ", style: GoogleFonts.amaranth(),),
                   const Expanded(child: Divider(thickness: 1, color: Colors.black,),),
                 ],
               ),

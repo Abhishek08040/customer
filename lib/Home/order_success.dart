@@ -44,7 +44,7 @@ class _OrderSuccessfulState extends State<OrderSuccessful>
 
               const SizedBox(height: 20,),
 
-              Text("Your invoice no. is: ${widget.invoiceNo}", style: GoogleFonts.andikaNewBasic(),),
+              Text("Your invoice no. is: ${widget.invoiceNo}", style: GoogleFonts.andika(),),
 
             ],
           ).p12(),

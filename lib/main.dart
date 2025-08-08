@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp>
 
                         const SizedBox(height: 20,),
 
-                        Text("PAGE NOT FOUND", style: GoogleFonts.andikaNewBasic(
+                        Text("PAGE NOT FOUND", style: GoogleFonts.andika(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
                           fontSize: 20,

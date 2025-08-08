@@ -83,7 +83,7 @@ class _ProductDetailsState extends State<ProductDetails>
                               Row(
                                 children: [
                                   for (int i = 0; i < averageRating; i++)
-                                    Text(' ★ ', style: GoogleFonts.andikaNewBasic(
+                                    Text(' ★ ', style: GoogleFonts.andika(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
                                       color: const Color.fromRGBO(255,215,0, 1),
@@ -109,7 +109,7 @@ class _ProductDetailsState extends State<ProductDetails>
                                       )
                                   ),),
 
-                                child: Text('$ratingsCount Reviews', style: GoogleFonts.andikaNewBasic(
+                                child: Text('$ratingsCount Reviews', style: GoogleFonts.andika(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Colors.pink,
@@ -128,7 +128,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
                           const SizedBox(height: 12,),
 
-                          Text(productDescription, style: GoogleFonts.andikaNewBasic(
+                          Text(productDescription, style: GoogleFonts.andika(
                             fontSize: 12,
                             color: const Color.fromRGBO(3, 16, 63, 1.0),
                           ),),
@@ -512,7 +512,7 @@ class _DisplayCommentsState extends State<DisplayComments>
 
         else if (!snapshot.hasData || snapshot.data.docs.length < 1)
         {
-          return Text('No comments found!', style: GoogleFonts.andikaNewBasic());
+          return Text('No comments found!', style: GoogleFonts.andika());
         }
 
         else if (snapshot.hasData && snapshot.connectionState == ConnectionState.done)
@@ -529,7 +529,7 @@ class _DisplayCommentsState extends State<DisplayComments>
                 title: Row(
                   children: [
                     for (int i = 0; i < int.parse(comment['Rating']); i++)
-                      Text(' ★ ', style: GoogleFonts.andikaNewBasic(
+                      Text(' ★ ', style: GoogleFonts.andika(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: const Color.fromRGBO(255,215,0, 1),
@@ -538,7 +538,7 @@ class _DisplayCommentsState extends State<DisplayComments>
                 ),
 
                 subtitle: Text(comment['Comment'],
-                  style: GoogleFonts.andikaNewBasic(
+                  style: GoogleFonts.andika(
                     textStyle: const TextStyle(fontWeight: FontWeight.bold)
                   ),).px4(),
 
